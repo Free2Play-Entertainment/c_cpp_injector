@@ -308,6 +308,18 @@ base = [
 
 # start
 
+pluginpath = path.join(os.getcwd(), "Plugins")
+
+for plugin in os.listdir(pluginpath):
+    if "Source" not in os.listdir(path.join(pluginpath, plugin)):
+        continue
+    for item in os.listdir(path.join(pluginpath, plugin)):
+        if(item.endswith(".uplugin")):
+            pluginname = item.split(".")[0]
+            base.append(pluginname.upper() + "_VTABLE=DLLIMPORT_VTABLE")
+            base.append(pluginname.upper() + "_API=")
+        
+
 projectname = ""
 
 for item in os.listdir(os.getcwd()):
@@ -330,8 +342,6 @@ if not path.exists(cpp):
 
 with open(cpp, "r") as f:
   data = json.load(f)
-
-print(data)
 
 try:
     data["configurations"][0]["defines"] = base
